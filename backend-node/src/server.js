@@ -28,24 +28,23 @@ app.get('/secret', jwtAuth, (req, res) => {
 })
 
 //fetch testing
-app.use('/stock', jwtAuth, function(req, res, next) {
+app.use('/stock', function(req, res, next) {
   const apikey = "M7DSRJECMBCEEWGF";
-  const ticker = ['MSFT']
+  const ticker = ['MSFT', 'DM']
 
-  let completed = 0;
   const results = [];
-  console.log(ticker);
+
   for (let i = 0; i < ticker.length; i++) {
-    const oneTicker = ticker[i];
 
     axios.get(
-        `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=${apikey}`
+        `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker[i]}&apikey=${apikey}`
       )
     .then((response) => {
-      completed += 1;
+
+      console.log("heeya: " + JSON.stringify(response.data))
 
       results.push(response.data);
-      if (completed === ticker.length) {
+      if (ticker.length) {
         //All ticker have finished their response
         console.log("completed");
 
